@@ -9,7 +9,7 @@ class UserProfile(models.Model):
     image = models.ImageField(upload_to="avatars", blank=True, null=True)
 
 
-@receiver(post_save, sender=User)
+@receiver(post_save, sender=User)   # why are these in separate functions?
 def create_user_profile(sender, instance, created, **kwargs):
     if created:
         UserProfile.objects.create(user=instance)

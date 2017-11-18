@@ -2,15 +2,15 @@ from django.db import models
 from django.utils import timezone
 
 
-class Post(models.Model):
-    """
+class Post(models.Model):  # why doe we not use class meta here?
+    """  
     Here we'll define our Post model
     """
     
     # author is linked to a registered
     # user in the 'auth_user' table.
     
-    author = models.ForeignKey('auth.User')
+    author = models.ForeignKey('auth.User')  # why is this auth.User - where does the auth. part come from
     title = models.CharField(max_length=200)
     content = models.TextField()
     created_date = models.DateTimeField(auto_now_add=True)
@@ -25,3 +25,6 @@ class Post(models.Model):
 
     def __unicode__(self):
         return self.title
+        
+    def __str__(self):    # why does this work and the one above not. Also why, when adding this its effect was immediate without a migrate?
+        return self.title    
