@@ -15,19 +15,19 @@ class UserRegistrationForm(UserCreationForm):
         widget=forms.PasswordInput
     )
 
-    class Meta:
+    class Meta:                                                                 # why not setup in the models.py file?
         model = User
         fields = ['username', 'email', 'password1', 'password2']
 
     def clean_email(self):
         email = self.cleaned_data.get('email')
         username = self.cleaned_data.get('username')
-        if email and User.objects.filter(email=email).exclude(username=username).count():
-            raise forms.ValidationError(u'Email addresses must be unique.')
+        if email and User.objects.filter(email=email).exclude(username=username).count(): 
+            raise forms.ValidationError(u'Email addresses must be unique.')     # if the result of this is True (ie. there is something in both cases)
         return email
 
     def clean_password2(self):
-        password1 = self.cleaned_data.get('password1')
+        password1 = self.cleaned_data.get('password1')                          # when do these functions get called? No reference to them elsewhere. 
         password2 = self.cleaned_data.get('password2')
 
         if password1 and password2 and password1 != password2:
@@ -37,7 +37,7 @@ class UserRegistrationForm(UserCreationForm):
         return password2
 
     def save(self, commit=True):
-        instance = super(UserRegistrationForm, self).save(commit=False)
+        instance = super(UserRegistrationForm, self).save(commit=False)         # the menaing of commit=False at this stage? 
 
         if commit:
             instance.save()

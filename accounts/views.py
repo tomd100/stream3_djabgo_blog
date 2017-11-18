@@ -13,7 +13,7 @@ def get_index(request):
 #-------------------------------------------------------------------------------
 
 def logout(request):
-    auth.logout(request);
+    auth.logout(request);                                                       # why reference to auth? Where does this come from?
     messages.success(request, "You have successfully logged out")
     return redirect(get_index);
     
@@ -48,7 +48,7 @@ def register(request):
             if user is not None:
                 auth.login(request, user);
                 
-                if request.GET and request.GET['next'] != "":
+                if request.GET and request.GET['next'] != "":                   # what does this do?
                     next = request.GET["next"];
                     return HttpResponseRedirect(next);
                 else:

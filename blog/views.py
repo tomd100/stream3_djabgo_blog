@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
+from django.contrib import messages
 from django.utils import timezone
 
 from .models import Post
@@ -62,9 +63,15 @@ def edit_post(request, id):
 @login_required(login_url="/accounts/login")
 def delete_post(request, id):
     post = get_object_or_404(Post, pk=id);
+    
+    # if post.id in Post.objects.all().filter(post.user = Post.user):
+    #     Post.objects.filter(id=post.id).delete()                                # is there a command to commit to the database?
+    # else:
+        # messages.error(request, "Error")
+    
     Post.objects.filter(id=post.id).delete()
-    return redirect(list_posts)
-
+    return redirect(list_posts)                                                 # how to make sure that the delte only happens for the right id. 
+                                                                                # there are issues with the flow - going back a page allows delete of other users blog
 #-------------------------------------------------------------------------------
 
     
