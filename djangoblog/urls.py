@@ -20,6 +20,7 @@ from .settings import MEDIA_ROOT
 from django.views import static
 
 from accounts.views import list_posts
+
 from accounts import urls as accounts_urls
 from blog import urls as blog_urls
 

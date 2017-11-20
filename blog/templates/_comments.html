@@ -1,0 +1,21 @@
+{% load bootstrap_tags %}
+
+<h2>Comments</h2>
+
+<form method="POST" action="{% url "add_comment" post.id %}">
+    
+    {% csrf_token %}
+ 
+    {{ form | as_bootstrap }}
+    
+    <button type="submit" class="btn btn-info">Add</button> 
+</form>
+
+{% for comment in comments %}
+<div>
+    <p>This is our Partial HTML Page</p>
+    <h3>{{ comment.title }}</h3>
+    <p>{{ comment.content }}</p>
+    <p><strong>{{ comment.author.username }}</strong> - {{ comment.created_date }}</p>
+</div>
+{% endfor %}

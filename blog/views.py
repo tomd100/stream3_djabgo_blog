@@ -3,8 +3,8 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.utils import timezone
 
-from .models import Post
-from .forms import BlogPostForm
+from .models import Post, Comment
+from .forms import BlogPostForm, BlogCommentForm
 
 #-------------------------------------------------------------------------------
 
@@ -19,9 +19,15 @@ def list_posts(request):
 
 #-------------------------------------------------------------------------------
 
+# def view_post(request, id):
+#     post = get_object_or_404(Post, pk=id);
+#     return render(request, "view_post.html", {"post": post});
+    
 def view_post(request, id):
-    post = get_object_or_404(Post, pk=id);
-    return render(request, "view_post.html", {"post": post});
+    this_post = get_object_or_404(Post, pk=id)
+    comments = Comment.objects.filter(post = this_post);
+    form = BlogCommentForm()
+    return render(request, "view_post.html", {"post": this_post, "comments": comments, "form": form})
 
 #-------------------------------------------------------------------------------
 
@@ -74,4 +80,18 @@ def delete_post(request, id):
                                                                                 # there are issues with the flow - going back a page allows delete of other users blog
 #-------------------------------------------------------------------------------
 
-    
+@login_required(login_url="/accounts/login")
+def add_comment(request, post_id):
+    post = get_object_or_404(Post, pk=post_id);
+    form = BlogCommentForm(request.POST);
+    if form.is_valid():
+        comment = form.save(commit = False);
+        
+        comment.author = request.user
+        comment.post = post
+        
+        comment.save()
+        
+        return redirect('view_post', post_id)
+
+#-------------------------------------------------------------------------------

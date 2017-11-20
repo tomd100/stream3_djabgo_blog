@@ -28,3 +28,14 @@ class Post(models.Model):  # why doe we not use class meta here?
         
     def __str__(self):    # why does this work and the one above not. Also why, when adding this its effect was immediate without a migrate?
         return self.title    
+        
+class Comment(models.Model):
+    author = models.ForeignKey('auth.User')  # why is this auth.User - where does the auth. part come from
+    post = models.ForeignKey(Post, related_name = "comments")
+    title = models.CharField(max_length=200)
+    content = models.TextField()
+    created_date = models.DateTimeField(auto_now_add=True)
+    approved = models.BooleanField(blank=False, default=False)
+    
+    def __str__(self):
+        return self.title
